@@ -10,7 +10,10 @@ const scorpion = {
     weapon: [],
     attack: function () {
         console.log(`${this.name} Fight...`);
-    }
+    },
+    changeHP: changeHP,
+    elHP: elHP,
+    renderHP: renderHP
 };
 
 const subzero = {
@@ -21,7 +24,10 @@ const subzero = {
     weapon: [],
     attack: function () {
         console.log(`${this.name} Fight...`)
-    }
+    },
+    changeHP: changeHP,
+    elHP: elHP,
+    renderHP: renderHP
 };
 
 const createElement = (tag, className) => {
@@ -57,99 +63,62 @@ const createPlayer = (character) => {
     return $player;
 }
 
-// const changeHP = (player) => {
-//     const $playerLife = document.querySelector('.player' + player.player + ' .life');
-//     player.hp -= Math.ceil(Math.random() * 20);
-//     $playerLife.style.width = player.hp + '%';
+$arenas.appendChild(createPlayer(scorpion));
+$arenas.appendChild(createPlayer(subzero));
 
-//     if (scorpion.hp <= 0 && subzero.hp <= 0) {
-//         $randomButton.disabled = true;
-//         $arenas.appendChild(playerDraw());
-//         return;
-//     } else if (scorpion.hp > subzero.hp && subzero.hp <= 0) {
-//         $playerLife.style.width = 0;
-//         $randomButton.disabled = true;
-//         $arenas.appendChild(playerWin(scorpion.name));
-//         return;
-//     } else if (scorpion.hp < subzero.hp && scorpion.hp <= 0) {
-//         $playerLife.style.width = 0;
-//         $randomButton.disabled = true;
-//         $arenas.appendChild(playerWin(subzero.name));
-//         return;
-//     }
-
-    // if (player.hp <= 0) {
-    //     $playerLife.style.width = 0;
-    //     $arenas.appendChild(playerWin(player.name))
-    //     $randomButton.disabled = true;
-    // }
-// }
-
-const changeHP = (character1, character2) => {
-    const $character1Life = createLifeBar(character1);
-    const $character2Life = createLifeBar(character2);
-    character1.hp -= Math.ceil(Math.random() * 20);
-    character2.hp -= Math.ceil(Math.random() * 20);
-    $character1Life.style.width = character1.hp + '%';
-    $character2Life.style.width = character2.hp + '%';
-
-    if (character1.hp <= 0 && character2.hp <= 0) {
-        $character1Life.style.width = 0;
-        $character2Life.style.width = 0;
-        $randomButton.disabled = true;
-        $arenas.appendChild(playerDraw());
-    } else if (character1.hp > character2.hp && character2.hp <= 0) {
-        $character2Life.style.width = 0;
-        $randomButton.disabled = true;
-        $arenas.appendChild(playerWin(character1.name));
-    } else if (character2.hp > character1.hp && character1.hp <= 0) {
-        $character1Life.style.width = 0;
-        $randomButton.disabled = true;
-        $arenas.appendChild(playerWin(character2.name));
+function changeHP(num = 20) {
+    if (this.hp <= 0) {
+        this.hp = 0;
+    } else {
+        this.hp -= num;
     }
 }
 
-const playerWin = (name) => {
+function elHP() {
+    const $el = document.querySelector('.player' + this.player + ' .life');
+    return $el;
+};
+
+function renderHP() {
+    this.elHP().style.width = this.hp + '%';
+};
+
+function getRandom(num) {
+    return Math.ceil(Math.random() * num);
+};
+
+const playerWins = (name) => {
     const $winTitle = createElement('div', 'winTitle');
-    $winTitle.innerText = name + ' wins';
+    if (name) {
+        $winTitle.innerText = name + ' wins';
+    } else {
+        $winTitle.innerText = 'draw';
+    }
 
     return $winTitle;
 };
 
-const playerDraw = () => {
-    const $drawTitle = createElement('div', 'drawTitle');
-    $drawTitle.innerText = 'draw';
-    
-    return $drawTitle;
-};
-
-const createLifeBar = (character) => {
-    const $characterLife = document.querySelector('.player' + character.player + ' .life');
-
-    return $characterLife;
-}
-
-// const restartGame = (character1, character2) => {
-//     character1.hp = 100;
-//     character2.hp = 100;
-//     const $character1Life = createLifeBar(character1);
-//     const $character2Life = createLifeBar(character2);
-//     $character1Life.style.width = character1.hp + '%';
-//     $character2Life.style.width = character2.hp + '%';
-//     console.log(222);
-// }
-
 $randomButton.addEventListener('click', () => {
-    // changeHP(scorpion);
-    // changeHP(subzero); 
-    changeHP(scorpion, subzero);
-    // changeHP(subzero, scorpion);
+    scorpion.changeHP(40);
+    scorpion.elHP();
+    scorpion.renderHP();
+    subzero.changeHP(10);
+    subzero.elHP();
+    subzero.renderHP();
+
+
+    if (scorpion.hp === 0 || subzero.hp === 0) {
+        $randomButton.disabled = true;
+    }
+
+    if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
+        $arenas.appendChild(playerWins(subzero.name));
+    } else if (subzero.hp === 0 && subzero.hp < scorpion.hp){
+        $arenas.appendChild(playerWins(scorpion.name));
+    } else if (scorpion.hp <= 0 && subzero.hp <= 0) {
+        $arenas.appendChild(playerWins()); 
+    }
 });
 
-// $restartButton.addEventListener('click', () => {
-//     restartGame(scorpion, subzero);
-//     console.log(111);
-// })
-
-$arenas.appendChild(createPlayer(scorpion));
-$arenas.appendChild(createPlayer(subzero));
+// $arenas.appendChild(createPlayer(scorpion));
+// $arenas.appendChild(createPlayer(subzero));
