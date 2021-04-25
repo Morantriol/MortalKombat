@@ -1,4 +1,11 @@
-export const logs = {
+export const HIT = {
+    head: 30,
+    body: 25,
+    foot: 20,
+}
+
+export const ATTACK = ['head', 'body', 'foot'];
+export const LOGS = {
     start: 'Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.',
     end: [
         'Результат удара [playerWins]: [playerLose] - труп',
@@ -36,56 +43,4 @@ export const logs = {
         '[playerKick] обманулся и жестокий [playerDefence] блокировал удар стопой в солнечное сплетение.'
     ],
     draw: 'Ничья - это тоже победа!'
-};
-
-export const HIT = {
-    head: 30,
-    body: 25,
-    foot: 20,
-}
-
-export const ATTACK = ['head', 'body', 'foot'];
-
-export const scorpion = {
-    player: 1,
-    name: 'SCORPION',
-    hp: 100,
-    img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
-    weapon: [],
-    attack: function () {
-        console.log(`${this.name} Fight...`);
-    },
-    changeHP,
-    elHP,
-    renderHP
-};
-
-export const subzero = {
-    player: 2,
-    name: 'SUB-ZERO',
-    hp: 100,
-    img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
-    weapon: [],
-    attack: function () {
-        console.log(`${this.name} Fight...`)
-    },
-    changeHP,
-    elHP,
-    renderHP
-};
-
-export function changeHP(num) {
-    this.hp -= num;
-    if (this.hp <= 0) {
-        this.hp = 0;
-    }
-}
-
-export function elHP() {
-    const $el = document.querySelector('.player' + this.player + ' .life');
-    return $el;
-};
-
-export function renderHP() {
-    this.elHP().style.width = this.hp + '%';
 };
